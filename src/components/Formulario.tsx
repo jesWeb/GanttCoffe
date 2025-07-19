@@ -1,7 +1,10 @@
 import { useState } from "react"
+import { useTareasContext } from "../context/TareasContext"
 
 export default function Formulario() {
 
+    const { tareas, crearTarea } = useTareasContext()
+   
     const [nombre, setNombre] = useState<string>("")
     const [comienzo, setComienzo] = useState<Date>(new Date())
     const [final, setFinal] = useState<Date>(new Date())
@@ -26,6 +29,7 @@ export default function Formulario() {
 
         console.log(nuevaTarea)
 
+        crearTarea(nuevaTarea)
 
 
         resetearFormulario()
