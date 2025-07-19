@@ -4,7 +4,7 @@ import { useTareasContext } from "../context/TareasContext"
 export default function Formulario() {
 
     const { tareas, crearTarea } = useTareasContext()
-   
+
     const [nombre, setNombre] = useState<string>("")
     const [comienzo, setComienzo] = useState<Date>(new Date())
     const [final, setFinal] = useState<Date>(new Date())
@@ -12,7 +12,7 @@ export default function Formulario() {
     const [modo, setModo] = useState<"crear" | "Editar">("crear")
     const [SeleccionarTareaId, setSeleccionarTareaId] = useState<string | null>(null)
 
-    const handleSubmit = (e) => {
+    const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault()
 
         //fecha formateada
@@ -73,6 +73,15 @@ export default function Formulario() {
                         >
                             <option
                             >-- selecciona una opcion --</option>
+
+                            {tareas.map((tarea) =>
+                                <option
+                                    key={tarea.id}
+                                    value={tarea.id}>
+                                    {tarea.nombre}
+                                </option>
+                            )}
+
                         </select>
                     )}
 
