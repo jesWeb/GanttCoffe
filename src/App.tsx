@@ -1,4 +1,5 @@
 import Formulario from "./components/Formulario"
+import GanTareas from "./components/GanTareas"
 
 function App() {
 
@@ -9,6 +10,7 @@ function App() {
           <h1 className="text-2xl mb-4 text-center">Gestion de tareas</h1>
           <div className="w-11/12 mx-auto">
             <Formulario />
+            <GanTareas />
           </div>
         </div>
       </div>
