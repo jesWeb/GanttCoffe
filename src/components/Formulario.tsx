@@ -52,7 +52,7 @@ export default function Formulario() {
 
     return (
         <>
-            <form className="w-full p-4 bg-red-400 rounded shadow-md "
+            <form className="w-full p-4 bg-red-400 rounded shadow-md space-x-4"
                 onSubmit={handleSubmit}
             >
                 {/* input para nuevos proyectos y select para selleccionar proyecto */}

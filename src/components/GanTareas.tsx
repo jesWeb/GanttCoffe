@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { FrappeGantt, ViewMode, type Task } from "react-frappe-gantt"
 import { useTareasContext } from "../context/TareasContext";
+import { Modal } from "./Modal";
 
 const GanTareas = () => {
 
@@ -8,17 +9,17 @@ const GanTareas = () => {
 
     const [TareasGantt, setTareasGantt] = useState<Task[]>([])
     const [ModoView, setModoView] = useState(ViewMode.Month)
+    const [SeleccionTarea, setSeleccionTarea] = useState<Task | null>(null)
 
 
-    console.log("estas son las tareas registradas", tareas);
 
 
     useEffect(() => {
 
-        if (!tareas || tareas.length === 0) {
-            console.log('no hay tareas en el redner');
-            
-        }
+        // if (!tareas || tareas.length === 0) {
+        //     console.log('no hay tareas en el redner');
+
+        // }
 
         const tareasValidas = tareas.filter((tarea) => tarea.comiezo && tarea.final)
 
@@ -35,6 +36,12 @@ const GanTareas = () => {
 
     }, [tareas])
 
+
+
+    const clickTarea = (tarea: Task) => {
+        console.log("Hemos hecho click en la tarea", tarea)
+        setSeleccionTarea(tarea)
+    }
 
     return (
         <>
@@ -58,21 +65,36 @@ const GanTareas = () => {
                         className="bg-blue-500 text-white p-2 rounded">Mes</button>
 
                 </div>
-
                 {TareasGantt.length > 0 ? (
-
-                    <FrappeGantt
-                        tasks={TareasGantt}
-                        viewMode={ModoView}
-                    />
-
+                    <>
+                        <FrappeGantt
+                            tasks={TareasGantt}
+                            viewMode={ModoView}
+                            onclick={clickTarea}
+                        />
+                        {SeleccionTarea &&
+                            <Modal
+                                titulo={SeleccionTarea.name}
+                                onClose={() => setSeleccionTarea(null)}
+                            >
+                                <p>
+                                    <span className="font-bold">Fecha de inicio:</span>
+                                    {new Date(SeleccionTarea.start).toLocaleDateString("es-ES")}
+                                </p>
+                                <p>
+                                    <span className="font-bold">Fecha de finalización:</span>
+                                    {new Date(SeleccionTarea.end).toLocaleDateString("es-ES")}
+                                </p>
+                                <p>{SeleccionTarea.progress}% Completado</p>
+                            </Modal>
+                        }
+                    </>
                 ) : (
-
-                    <p>No hay Tareas para Mostrar.  <br />Crea una tarea para ver el diagrama de Gantt.</p>
+                    <p>No hay tareas para mostrar. Crea una tarea para ver el diagrama de Gantt.</p>
                 )}
+
             </div>
         </>
     )
 }
-
 export default GanTareas
