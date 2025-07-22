@@ -3,7 +3,7 @@ import { useTareasContext } from "../context/TareasContext"
 
 export default function Formulario() {
 
-    const { tareas, crearTarea, EditarTarea ,eliminarTarea} = useTareasContext()
+    const { tareas, crearTarea, EditarTarea, eliminarTarea } = useTareasContext()
 
     const [nombre, setNombre] = useState<string>("")
     const [comienzo, setComienzo] = useState<Date>(new Date())
@@ -69,7 +69,7 @@ export default function Formulario() {
         if (SeleccionarTareaId) {
             eliminarTarea(SeleccionarTareaId)
             console.log("has eliminado correctamente ");
-            
+
             resetearFormulario()
         }
 
