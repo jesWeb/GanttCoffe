@@ -5,6 +5,8 @@ import useTareas from "../hooks/useTareas"
 interface TareasContextType {
     tareas: Tareas[]
     crearTarea: (tarea: Tareas) => void
+    EditarTarea: (tarea: Tareas) => void
+    eliminarTarea: (tareaEliminada: string) => void
 }
 
 const tareasContext = createContext<TareasContextType | undefined>(undefined)
@@ -12,11 +14,11 @@ const tareasContext = createContext<TareasContextType | undefined>(undefined)
 
 export const TareasProvider = ({ children }: { children: ReactNode }) => {
 
-    const { tareas, crearTarea } = useTareas()
+    const { tareas, crearTarea, EditarTarea, eliminarTarea } = useTareas()
 
     return (
         <tareasContext.Provider
-            value={{ tareas, crearTarea }}
+            value={{ tareas, crearTarea, EditarTarea, eliminarTarea }}
         >
             {children}
         </tareasContext.Provider>

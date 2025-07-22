@@ -3,7 +3,7 @@ import { useTareasContext } from "../context/TareasContext"
 
 export default function Formulario() {
 
-    const { tareas, crearTarea } = useTareasContext()
+    const { tareas, crearTarea, EditarTarea ,eliminarTarea} = useTareasContext()
 
     const [nombre, setNombre] = useState<string>("")
     const [comienzo, setComienzo] = useState<Date>(new Date())
@@ -29,13 +29,18 @@ export default function Formulario() {
 
         console.log(nuevaTarea)
 
-        crearTarea(nuevaTarea)
+        if (modo === "crear") {
 
+            crearTarea(nuevaTarea)
 
+        } else if (modo === 'Editar') {
+            console.log('estamos en modo Editar', nuevaTarea);
+            EditarTarea(nuevaTarea)
+        }
         resetearFormulario()
     }
 
-
+    //resetaer formulario
     const resetearFormulario = () => {
         setNombre("")
         setComienzo(new Date())
@@ -46,8 +51,29 @@ export default function Formulario() {
 
     }
 
+    //seleccionar tareas para editar 
+    const tareasSeleccionadaEditar = (tareasId: string) => {
+        const tarea = tareas.find((tarea) => tarea.id === tareasId)
+        if (tarea) {
+            setNombre(tarea.nombre)
+            setComienzo(new Date(tarea.comiezo))
+            setFinal(new Date(tarea.final))
+            setProgreso(tarea.progreso)
+            setSeleccionarTareaId(tarea.id)
+        }
+    }
 
+    //eliminar 
+    const tareaEliminada = () => {
+        // console.log('holas');
+        if (SeleccionarTareaId) {
+            eliminarTarea(SeleccionarTareaId)
+            console.log("has eliminado correctamente ");
+            
+            resetearFormulario()
+        }
 
+    }
 
 
     return (
@@ -70,6 +96,7 @@ export default function Formulario() {
                         <select
                             className="w-1/4 p-2 border border-gray-300 rounded"
                             value={SeleccionarTareaId || ""}
+                            onChange={(e) => tareasSeleccionadaEditar(e.target.value)}
                         >
                             <option
                             >-- selecciona una opcion --</option>
@@ -118,11 +145,12 @@ export default function Formulario() {
                     <button
                         type="submit"
                         className="bg-blue-500 w-50 text-white p-2 rounded">{
-                            modo === "crear" ? "Crear Tarea" : "Actualizar Tarea"
+                            modo === "crear" ? "Crear Tarea" : "Editar"
                         }</button>
 
                     {modo === "Editar" && (
                         <button
+                            onClick={tareaEliminada}
                             type="button"
                             className="bg-red-500 text-white w-50 p-2 rounded">Eliminar</button>
 
@@ -131,6 +159,7 @@ export default function Formulario() {
                     <button
                         type="button"
                         onClick={() => {
+                            resetearFormulario()
                             setModo(modo === "crear" ? "Editar" : "crear")
                         }}
                         className="bg-orange-300 text-white p-2 rounded">
